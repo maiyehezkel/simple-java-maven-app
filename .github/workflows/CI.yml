@@ -50,10 +50,6 @@ jobs:
           # Store the new version in an environment file
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
       
-      - name: Set Output
-        id: set_output
-        run: |
-          echo "::set-output name=new_version_output::$NEW_VERSION"
                            
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
