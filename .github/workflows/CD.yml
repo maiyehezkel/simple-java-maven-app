@@ -30,4 +30,4 @@ jobs:
             git reset --hard origin/master &&
             git pull origin master &&
             docker run -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/my-app:${{ env.NEW_VERSION }}
-          '
+           '
