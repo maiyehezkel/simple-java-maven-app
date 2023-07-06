@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploym
 
 on:
   pull_request_review:
