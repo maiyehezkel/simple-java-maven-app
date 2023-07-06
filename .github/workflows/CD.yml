@@ -29,5 +29,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
             #Now we have got the access of EC2 and we will start the deploy .
-            docker run --name my-app ${{ secrets.DOCKERHUB_USERNAME }}/my-app:${current_version}
+            docker run --name my-app ${{ secrets.DOCKERHUB_USERNAME }}/my-app:1.0.41
            '
