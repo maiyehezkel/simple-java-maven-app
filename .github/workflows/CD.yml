@@ -14,8 +14,7 @@ jobs:
     steps:      
       - uses: actions/checkout@v3
       
-      - name: Update Version
-        id: update_version
+      - name: Take Version
         run: |
           # Get the current version from the pom.xml file
           current_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
@@ -30,5 +29,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
             #Now we have got the access of EC2 and we will start the deploy .
-            docker run --name my-app ${{ secrets.DOCKERHUB_USERNAME }}/my-app:$current_version
+            docker run --name my-app ${{ secrets.DOCKERHUB_USERNAME }}/my-app:"$current_version"
            '
