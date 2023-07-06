@@ -1,16 +1,12 @@
 name: Deploy
-
 on:
-  pull_request_review:
-    types: submitted
+  pull_request:
+    branches: [ "master" ]
+    types: [ closed ]
 
 jobs:
-  approved:
-    if: github.event.review.state == 'approved'
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "This PR was approved"
   deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:      
       - uses: actions/checkout@v2
@@ -20,13 +16,14 @@ jobs:
           HOSTNAME: ${{ secrets.HOSTNAME }}
           USER_NAME: ${{ secrets.USER_NAME }}
         run: |
-           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
             #Now we have got the access of EC2 and we will start the deploy .
-             cd /home/ubuntu/CounterApp &&
-             git checkout master &&
-             git fetch --all &&
-             git reset --hard origin/master &&
-             git pull origin master &&
-             docker run -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/my-app:${{ env.NEW_VERSION }}
+            cd /home/ubuntu/CounterApp &&
+            git checkout master &&
+            git fetch --all &&
+            git reset --hard origin/master &&
+            git pull origin master &&
+            docker run -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/my-app:${{ env.NEW_VERSION }}
+           '
