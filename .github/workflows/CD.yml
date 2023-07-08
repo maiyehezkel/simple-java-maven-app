@@ -27,6 +27,8 @@ jobs:
           CURRENT_VERSION: $current_version
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -o SendEnv=CURRENT_VERSION -i private_key ${USER_NAME}@${HOSTNAME} '
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} "'
             # Now we have got access to EC2, and we will start the deploy.
-            sudo docker run --name my-app "${{ secrets.DOCKERHUB_USERNAME }}/my-app:$CURRENT_VERSION"'
+            CURRENT_VERSION=$1
+            sudo docker run --name my-app \${{ secrets.DOCKERHUB_USERNAME }}/my-app:$CURRENT_VERSION
+            '" -- "$current_version"
