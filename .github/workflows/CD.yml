@@ -24,11 +24,10 @@ jobs:
           PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
           HOSTNAME: ${{ secrets.HOSTNAME }}
           USER_NAME: ${{ secrets.USER_NAME }}
+          CURRENT_VERSION: ${{ github.event.inputs.current_version }}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
             #Now we have got the access of EC2 and we will start the deploy .
-            export CURRENT_VERSION='"$current_version"'
-            sudo docker run --name my-app ${{ secrets.DOCKERHUB_USERNAME }}/my-app:$CURRENT_VERSION
-           '
+            sudo docker run --name my-app "${{ secrets.DOCKERHUB_USERNAME }}/my-app:$CURRENT_VERSION"           '
