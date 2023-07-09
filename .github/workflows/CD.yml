@@ -31,6 +31,5 @@ jobs:
           scp -o StrictHostKeyChecking=no -i private_key current_version.txt ${USER_NAME}@${HOSTNAME}:~/current_version.txt
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '"
             # Now we have got access to EC2, and we will start the deploy.
-            cat curent_version.txt
             CURRENT_VERSION=$(cat current_version.txt)
-            sudo docker run --name my-app ${{ secrets.DOCKERHUB_USERNAME }}/my-app:"$CURRENT_VERSION" "'
+            sudo docker run --name my-app ${{ secrets.DOCKERHUB_USERNAME }}/my-app:${CURRENT_VERSION} "'
