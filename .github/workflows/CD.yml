@@ -19,15 +19,15 @@ jobs:
           # Get the current version from the pom.xml file
           current_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "Current Version: $current_version"
+          echo "$current_version" > current_version.txt
+
       - name: Deploy to EC2
         env:
           PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
           HOSTNAME: ${{ secrets.HOSTNAME }}
           USER_NAME: ${{ secrets.USER_NAME }}
-          CURRENT_VERSION: $current_version
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          echo "$current_version" > current_version.txt
           scp -o StrictHostKeyChecking=no -i private_key current_version.txt ${USER_NAME}@${HOSTNAME}:~/current_version.txt
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '"
             # Now we have got access to EC2, and we will start the deploy.
